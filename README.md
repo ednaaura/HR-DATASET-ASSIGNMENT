@@ -18,19 +18,19 @@ from sklearn.cluster import KMeans
 #import dataset
 df=pd.read_csv("C:/Users/admin/Desktop/LUXTECH/MACHINE LEARNING/HRDataset_v14.csv")
 df.head(10)
-#Check the shape of the dataset (rows, columns)
+# 2.Check the shape of the dataset (rows, columns)
 print (df.shape)
 - dataset has 311 rows and 36 columns.
-#Display the column names and their data types
+#3.Display the column names and their data types
 df.dtypes
-#check number of unique values
+#4.check number of unique values
 df.nunique()
-#check for missing values in the dataset
+#5.check for missing values in the dataset
 df.isnull().sum()
 - dateoftermination had missing values of 207.
-#describe numerical columns
+#6.describe numerical columns
 df.describe()
-#plot salary distribution
+#7.plot salary distribution
 plt.figure(figsize=(10, 6)) 
 plt.hist(df['Salary'], bins=30, alpha=0.7, color='skyblue')
 plt.title('Salary Distribution')
@@ -38,16 +38,16 @@ plt.xlabel('Salary')
 plt.ylabel('Frequency')
 plt.grid(True, alpha=0.3)
 plt.show()
-#What is the average age of employees at the company? (Use DOB column).
+#8.What is the average age of employees at the company? (Use DOB column).
 df['DOB'] = pd.to_datetime(df['DOB'])
 current_year = datetime.now().year - df['DOB'].dt.year
 average_age = current_year.mean()
 print(average_age)
-#How many employees are still employed vs terminated?
+#9.How many employees are still employed vs terminated?
 employment_status = df['EmploymentStatus'].value_counts()
 print(employment_status)
 - terminated employees are 104(both voluntary and involuntary) while employed actively are 207.
-#Which departments have the most employees?
+#10.Which departments have the most employees?
 #plotting a countplot
 plt.figure(figsize=(12, 6))
 sns.countplot(data=df, x='Department', order=df['Department'].value_counts().index) 
@@ -59,10 +59,10 @@ plt.show()
 - from the visualization, production department had the most  employees with approximately 220.
 ## PART B: Business Analysis
 
-#What is the average salary per department?
+#11.What is the average salary per department?
 avg_salary_dept= df.groupby('Department')['Salary'].mean().sort_values(ascending=False)
 print(avg_salary_dept)
-#employment status distribution
+#12.employment status distribution
 plt.figure(figsize=(8, 5))
 sns.countplot(data=df, x='EmploymentStatus', palette='Set2')
 plt.title('Employment Status Distribution') 
@@ -70,7 +70,7 @@ plt.xlabel('Employment Status')
 plt.ylabel('Count')
 plt.show()
 
-#eployment status distribution using pie chart
+#13.employment status distribution using pie chart
 employment_counts = df['EmploymentStatus'].value_counts()
 plt.figure(figsize=(8, 8))
 plt.pie(employment_counts, labels= employment_counts.index, autopct='%1.1f%%', startangle=140, colors=sns.color_palette('Set3'))
@@ -78,20 +78,20 @@ plt.title('Employment Status Distribution')
 plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 plt.show()
 
-#Compare salary levels between Male and Female employees.
+#14.Compare salary levels between Male and Female employees.
 #using boxplot
 plt.figure(figsize=(10, 6))
 sns.boxplot(data=df,x='Sex',y='Salary')
 plt.title('Salary Distribution by Gender')
 plt.show()
-#Which recruitment source brings in the most employees?
+#15.Which recruitment source brings in the most employees?
 recruitment_sources=df['RecruitmentSource'].value_counts()
 print(recruitment_sources)
 - it is shown that 'Indeed' brings in the most employees.
-#What percentage of employees attended a Diversity Job Fair?
+#16.What percentage of employees attended a Diversity Job Fair?
 diversity_percentage=df['FromDiversityJobFairID'].mean()*100
 print(diversity_percentage)
-#Compare engagement survey scores across different departments.
+#17.Compare engagement survey scores across different departments.
 #plotting barplot
 plt.figure(figsize=(12, 6))
 sns.barplot(data=df, x='Department', y='EngagementSurvey', ci=None, palette='viridis')
@@ -101,43 +101,43 @@ plt.ylabel('Average Engagement Survey Score')
 plt.tight_layout()
 plt.show()
 - executive office department had the highest engagement score while sales departmnt had the lowest engagement score.
-#Which race has the highest average salary?
+#18.Which race has the highest average salary?
 avg_salary_race= df.groupby('RaceDesc')['Salary'].mean().sort_values(ascending=False)
 print(avg_salary_race)
-#What is the relationship between number of projects (SpecialProjectsCount) and salary?
+#19.What is the relationship between number of projects (SpecialProjectsCount) and salary?
 plt.figure(figsize=(10, 6))
 sns.scatterplot(data=df, x='SpecialProjectsCount', y='Salary', hue='Department', palette='tab10', alpha=0.7)
 plt.title('Special Projects Count vs Salary')       
 plt.show()
-#Do married employees earn more on average than single employees?
+#20.Do married employees earn more on average than single employees?
 plt.figure(figsize=(10, 6))
 sns.barplot(data=df, x='MaritalDesc', y='Salary')
 plt.title('Average Salary by Marital Status')
 plt.xlabel('Marital Status')
 plt.ylabel('Average Salary')
 plt.show()
-#Which managers have the largest teams?
+#21.Which managers have the largest teams?
 manager_teams=df.groupby('ManagerName').size().sort_values(ascending=False)
 print(manager_teams)
 ## PART C: Data Visualization
-#Plot the salary distribution using histograms.
+#22.Plot the salary distribution using histograms.
 plt.figure(figsize=(12,8))
 plt.subplot(2,2,1)
 plt.hist(df['Salary'],bins=30,alpha=0.7,color='purple')
 plt.title('Salary Distribution')
 plt.show()
-#Show the count of employees by department
+#23.Show the count of employees by department
 plt.subplot(2,2,2)
 df['Department'].value_counts().plot(kind='bar')
 plt.title('Employee Count by Department')
 plt.show()
-#Compare average satisfaction score by department.
+#24.Compare average satisfaction score by department.
 plt.subplot(2,2,3)
 df.groupby('Department')['EmpSatisfaction'].mean().plot(kind='bar')
 plt.title("Average Satisfaction by Department")
 plt.show()
 
-#Visualize employee terminations over time.
+#25.Visualize employee terminations over time.
 plt.subplot(2, 2, 4)
 terminated = df[df['Termd'] == 1]
 if not terminated.empty:
@@ -155,23 +155,23 @@ sns.boxplot(data=df,x='Sex',y='Salary')
 plt.title('Salary Distribution by Gender')
 plt.show()
 
-#Visualize performance scores vs salary.
+#26.Visualize performance scores vs salary.
 plt.figure(figsize=(12, 8))
 sns.stripplot(data=df, x='PerformanceScore', y='Salary', jitter=True)
 plt.title('Performance Score vs Salary')
 plt.show()
-#Create a heatmap of correlations between numeric variables.
+#27.Create a heatmap of correlations between numeric variables.
 numeric_cols = df.select_dtypes(include=[np.number]).columns
 plt.figure(figsize=(12, 8))
 sns.heatmap(df[numeric_cols].corr(), annot=True, cmap='coolwarm', center=0)
 plt.title('Correlation Heatmap')
 plt.show()
-#Plot engagement survey score vs satisfaction score.
+#28.Plot engagement survey score vs satisfaction score.
 plt.figure(figsize=(10, 6))
 sns.scatterplot(data=df, x='EngagementSurvey', y='EmpSatisfaction')
 plt.title('Engagement vs Satisfaction')
 plt.show()
-#Show a stacked bar chart of employee status across departments. 
+#29.Show a stacked bar chart of employee status across departments. 
 status_dept = pd.crosstab(df['Department'], df['EmploymentStatus'])
 status_dept.plot(kind='bar', stacked=True, figsize=(12, 8))
 plt.title('Employment Status by Department')
@@ -179,7 +179,7 @@ plt.xticks(rotation=45)
 plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
 plt.show()
-#Plot absenteeism (Absences) distribution among employees.
+#30.Plot absenteeism (Absences) distribution among employees.
 plt.figure(figsize=(10, 6))
 sns.histplot(data=df, x='Absences', bins=20)
 plt.title('Absenteeism Distribution')
